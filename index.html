@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C++ Программа — Класс Student</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            min-height: 100vh;
+        }
+
+        .code-font {
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+        }
+
+        pre code.hljs {
+            background: transparent !important;
+            padding: 0 !important;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .code-container {
+            background: #282c34;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .code-header {
+            background: #21252b;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #373b41;
+        }
+
+        .window-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .window-dots span {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #ff5f56; }
+        .dot-yellow { background: #ffbd2e; }
+        .dot-green { background: #27c93f; }
+
+        .copy-btn {
+            transition: all 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .copy-btn.copied {
+            background: #27c93f !important;
+            color: #000 !important;
+        }
+
+        .output-block {
+            background: #1a1a2e;
+            border: 1px solid #16213e;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #e2e8f0;
+        }
+
+        .feature-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            border-color: rgba(99, 102, 241, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.15);
+        }
+
+        .glow-text {
+            background: linear-gradient(90deg, #818cf8, #c084fc, #818cf8);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite;
+        }
+
+        @keyframes shimmer {
+            to { background-position: 200% center; }
+        }
+
+        .line-numbers {
+            counter-reset: line;
+            padding: 20px 0;
+        }
+
+        .scroll-smooth {
+            scroll-behavior: smooth;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+    </style>
+</head>
+<body class="text-white scroll-smooth">
+
+    <!-- Header -->
+    <header class="pt-12 pb-8 px-4">
+        <div class="max-w-5xl mx-auto text-center">
+            <div class="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/30 rounded-full px-4 py-1.5 mb-6">
+                <span class="text-indigo-400 text-sm font-medium">C++ / OOP / STL</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">
+                Класс <span class="glow-text">Student</span>
+            </h1>
+            <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+                Полная программа на C++ с классом Student, сортировкой по среднему баллу и фильтрацией отличников
+            </p>
+        </div>
+    </header>
+
+    <!-- Feature Cards -->
+    <section class="px-4 pb-8">
+        <div class="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="feature-card p-4">
+                <div class="text-2xl mb-2">🏗️</div>
+                <h3 class="font-semibold text-white mb-1">Инкапсуляция</h3>
+                <p class="text-slate-400 text-sm">Закрытые поля, геттеры и методы класса</p>
+            </div>
+            <div class="feature-card p-4">
+                <div class="text-2xl mb-2">📊</div>
+                <h3 class="font-semibold text-white mb-1">Средний балл</h3>
+                <p class="text-slate-400 text-sm">Метод getAverage() с точностью double</p>
+            </div>
+            <div class="feature-card p-4">
+                <div class="text-2xl mb-2">🔄</div>
+                <h3 class="font-semibold text-white mb-1">Сортировка</h3>
+                <p class="text-slate-400 text-sm">std::sort с лямбда-компаратором</p>
+            </div>
+            <div class="feature-card p-4">
+                <div class="text-2xl mb-2">✅</div>
+                <h3 class="font-semibold text-white mb-1">Фильтрация</h3>
+                <p class="text-slate-400 text-sm">Отбор студентов только с 4 и 5</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Code Section -->
+    <section class="px-4 pb-8">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-2xl font-bold text-white">Исходный код</h2>
+                <span class="text-slate-500 text-sm code-font">main.cpp</span>
+            </div>
+
+            <div class="code-container">
+                <div class="code-header">
+                    <div class="window-dots">
+                        <span class="dot-red"></span>
+                        <span class="dot-yellow"></span>
+                        <span class="dot-green"></span>
+                    </div>
+                    <span class="text-slate-500 text-sm code-font">main.cpp</span>
+                    <button id="copyBtn" class="copy-btn bg-slate-700 hover:bg-slate-600 text-slate-300 px-4 py-1.5 rounded-lg text-sm font-medium flex items-center gap-2" onclick="copyCode()">
+                        <svg id="copyIcon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                        <span id="copyText">Копировать</span>
+                    </button>
+                </div>
+                <div class="overflow-x-auto p-5">
+                    <pre><code id="codeBlock" class="language-cpp">/*
+ * =============================================================
+ *  Программа: Класс Student
+ *  Описание:  Демонстрация ООП на C++ — создание класса Student
+ *             с инкапсуляцией, сортировкой и фильтрацией данных.
+ *  Автор:     Учебный пример
+ *  Компиляция: g++ -std=c++17 -o student main.cpp
+ * =============================================================
+ */
+
+#include &lt;iostream&gt;   // Ввод/вывод
+#include &lt;string&gt;     // Работа со строками
+#include &lt;algorithm&gt;  // std::sort, std::all_of
+#include &lt;iomanip&gt;    // std::fixed, std::setprecision
+
+using namespace std;
+
+// ============================================================
+// Класс Student — представляет студента с оценками
+// ============================================================
+class Student {
+private:
+    string fullName;      // Фамилия и инициалы (например, "Иванов И.И.")
+    string groupNumber;   // Номер группы (например, "ИС-21")
+    int grades[5];        // Статический массив из 5 оценок (от 1 до 5)
+
+public:
+    // ----------------------------------------------------------
+    // Конструктор по умолчанию
+    // ----------------------------------------------------------
+    Student() : fullName(""), groupNumber("") {
+        for (int i = 0; i &lt; 5; i++)
+            grades[i] = 0;
+    }
+
+    // ----------------------------------------------------------
+    // Конструктор с параметрами: имя, группа и массив оценок
+    // ----------------------------------------------------------
+    Student(const string&amp; name, const string&amp; group, const int gr[5])
+        : fullName(name), groupNumber(group)
+    {
+        for (int i = 0; i &lt; 5; i++)
+            grades[i] = gr[i];
+    }
+
+    // ----------------------------------------------------------
+    // Конструктор с параметрами: имя, группа и 5 отдельных оценок
+    // ----------------------------------------------------------
+    Student(const string&amp; name, const string&amp; group,
+            int g1, int g2, int g3, int g4, int g5)
+        : fullName(name), groupNumber(group)
+    {
+        grades[0] = g1;
+        grades[1] = g2;
+        grades[2] = g3;
+        grades[3] = g4;
+        grades[4] = g5;
+    }
+
+    // ----------------------------------------------------------
+    // Метод: вычисление среднего балла студента
+    // Возвращает среднее арифметическое пяти оценок как double
+    // ----------------------------------------------------------
+    double getAverage() const {
+        int sum = 0;
+        for (int i = 0; i &lt; 5; i++)
+            sum += grades[i];
+        return static_cast&lt;double&gt;(sum) / 5.0;
+    }
+
+    // ----------------------------------------------------------
+    // Метод: проверка, все ли оценки равны 4 или 5
+    // Возвращает true, если нет ни одной оценки ниже 4
+    // ----------------------------------------------------------
+    bool hasOnlyGoodGrades() const {
+        for (int i = 0; i &lt; 5; i++) {
+            if (grades[i] &lt; 4)
+                return false;
+        }
+        return true;
+    }
+
+    // ----------------------------------------------------------
+    // Геттеры для доступа к закрытым полям
+    // ----------------------------------------------------------
+    string getFullName() const {
+        return fullName;
+    }
+
+    string getGroupNumber() const {
+        return groupNumber;
+    }
+
+    // ----------------------------------------------------------
+    // Метод: вывод полной информации о студенте
+    // ----------------------------------------------------------
+    void printInfo() const {
+        cout &lt;&lt; fullName
+             &lt;&lt; ", группа " &lt;&lt; groupNumber
+             &lt;&lt; ", оценки: ";
+        for (int i = 0; i &lt; 5; i++) {
+            cout &lt;&lt; grades[i];
+            if (i &lt; 4) cout &lt;&lt; " ";
+        }
+        cout &lt;&lt; ", средний балл: "
+             &lt;&lt; fixed &lt;&lt; setprecision(1)
+             &lt;&lt; getAverage() &lt;&lt; endl;
+    }
+};
+
+
+// ============================================================
+//  Функция main — точка входа в программу
+// ============================================================
+int main() {
+    // Установка кодировки для корректного вывода кириллицы (Windows)
+    // system("chcp 65001");  // раскомментировать при необходимости
+
+    const int N = 10;  // Количество студентов
+
+    // ----------------------------------------------------------
+    // Вариант 1: Ввод данных с клавиатуры (раскомментировать)
+    // ----------------------------------------------------------
+    /*
+    Student students[N];
+    for (int i = 0; i &lt; N; i++) {
+        string name, group;
+        int g[5];
+
+        cout &lt;&lt; "Студент #" &lt;&lt; (i + 1) &lt;&lt; ":" &lt;&lt; endl;
+        cout &lt;&lt; "  Фамилия и инициалы: ";
+        getline(cin, name);
+        cout &lt;&lt; "  Номер группы: ";
+        getline(cin, group);
+        cout &lt;&lt; "  Введите 5 оценок через пробел: ";
+        for (int j = 0; j &lt; 5; j++)
+            cin &gt;&gt; g[j];
+        cin.ignore();  // Очистка буфера после cin &gt;&gt;
+
+        students[i] = Student(name, group, g);
+    }
+    */
+
+    // ----------------------------------------------------------
+    // Вариант 2: Данные заданы жёстко (для демонстрации)
+    // ----------------------------------------------------------
+    Student students[N] = {
+        Student("Иванов И.И.",    "ИС-21", 5, 4, 5, 5, 4),
+        Student("Петров П.П.",    "ИС-21", 3, 3, 4, 2, 3),
+        Student("Сидоров С.С.",   "ИС-22", 5, 5, 4, 5, 5),
+        Student("Козлова А.В.",   "ИС-22", 4, 3, 4, 4, 3),
+        Student("Новикова Е.А.",  "ИС-23", 4, 4, 5, 4, 4),
+        Student("Морозов Д.К.",   "ИС-21", 3, 3, 3, 3, 2),
+        Student("Волкова М.С.",   "ИС-23", 5, 5, 5, 5, 5),
+        Student("Лебедев Р.О.",   "ИС-22", 4, 4, 4, 5, 4),
+        Student("Соколов В.Н.",   "ИС-23", 3, 4, 3, 4, 3),
+        Student("Кузнецова Т.И.", "ИС-21", 5, 4, 4, 5, 5)
+    };
+
+    // ----------------------------------------------------------
+    // Сортировка массива по возрастанию среднего балла
+    // Используем std::sort с лямбда-компаратором
+    // ----------------------------------------------------------
+    sort(students, students + N, [](const Student&amp; a, const Student&amp; b) {
+        return a.getAverage() &lt; b.getAverage();
+    });
+
+    // ----------------------------------------------------------
+    // Вывод отсортированного списка всех студентов
+    // ----------------------------------------------------------
+    cout &lt;&lt; "=========================================" &lt;&lt; endl;
+    cout &lt;&lt; " Отсортированный список студентов" &lt;&lt; endl;
+    cout &lt;&lt; " (по возрастанию среднего балла)" &lt;&lt; endl;
+    cout &lt;&lt; "=========================================" &lt;&lt; endl;
+
+    for (int i = 0; i &lt; N; i++) {
+        cout &lt;&lt; setw(2) &lt;&lt; (i + 1) &lt;&lt; ". "
+             &lt;&lt; students[i].getFullName()
+             &lt;&lt; ", группа " &lt;&lt; students[i].getGroupNumber()
+             &lt;&lt; ", средний балл: "
+             &lt;&lt; fixed &lt;&lt; setprecision(1)
+             &lt;&lt; students[i].getAverage()
+             &lt;&lt; endl;
+    }
+
+    // ----------------------------------------------------------
+    // Вывод студентов, имеющих только оценки 4 и 5
+    // ----------------------------------------------------------
+    cout &lt;&lt; endl;
+    cout &lt;&lt; "=========================================" &lt;&lt; endl;
+    cout &lt;&lt; " Студенты с оценками только 4 и 5" &lt;&lt; endl;
+    cout &lt;&lt; "=========================================" &lt;&lt; endl;
+
+    bool found = false;  // Флаг: найден ли хотя бы один такой студент
+
+    for (int i = 0; i &lt; N; i++) {
+        if (students[i].hasOnlyGoodGrades()) {
+            cout &lt;&lt; "  " &lt;&lt; students[i].getFullName()
+                 &lt;&lt; ", группа " &lt;&lt; students[i].getGroupNumber()
+                 &lt;&lt; endl;
+            found = true;
+        }
+    }
+
+    // Если ни одного студента с оценками 4 и 5 не найдено
+    if (!found) {
+        cout &lt;&lt; "  Нет студентов с оценками только 4 и 5." &lt;&lt; endl;
+    }
+
+    cout &lt;&lt; "=========================================" &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Expected Output Section -->
+    <section class="px-4 pb-8">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-2xl font-bold text-white mb-4">Ожидаемый вывод программы</h2>
+            <div class="output-block p-5 overflow-x-auto">
+                <pre class="text-green-400 text-sm leading-relaxed"><code>=========================================
+ Отсортированный список студентов
+ (по возрастанию среднего балла)
+=========================================
+ 1. Морозов Д.К., группа ИС-21, средний балл: 2.8
+ 2. Петров П.П., группа ИС-21, средний балл: 3.0
+ 3. Соколов В.Н., группа ИС-23, средний балл: 3.4
+ 4. Козлова А.В., группа ИС-22, средний балл: 3.6
+ 5. Новикова Е.А., группа ИС-23, средний балл: 4.2
+ 6. Лебедев Р.О., группа ИС-22, средний балл: 4.2
+ 7. Иванов И.И., группа ИС-21, средний балл: 4.6
+ 8. Кузнецова Т.И., группа ИС-21, средний балл: 4.6
+ 9. Сидоров С.С., группа ИС-22, средний балл: 4.8
+10. Волкова М.С., группа ИС-23, средний балл: 5.0
+
+=========================================
+ Студенты с оценками только 4 и 5
+=========================================
+  Новикова Е.А., группа ИС-23
+  Лебедев Р.О., группа ИС-22
+  Иванов И.И., группа ИС-21
+  Кузнецова Т.И., группа ИС-21
+  Сидоров С.С., группа ИС-22
+  Волкова М.С., группа ИС-23
+=========================================</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Structure Explanation -->
+    <section class="px-4 pb-16">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-2xl font-bold text-white mb-6">Структура программы</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <div class="feature-card p-6">
+                    <h3 class="text-lg font-bold text-indigo-400 mb-3 flex items-center gap-2">
+                        <span class="bg-indigo-500/20 rounded-lg p-2 text-xl">📦</span>
+                        Класс Student
+                    </h3>
+                    <ul class="text-slate-300 text-sm space-y-2">
+                        <li class="flex items-start gap-2">
+                            <span class="text-indigo-400 mt-0.5">●</span>
+                            <span><strong class="text-white">fullName</strong> — фамилия и инициалы (private)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-indigo-400 mt-0.5">●</span>
+                            <span><strong class="text-white">groupNumber</strong> — номер группы (private)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-indigo-400 mt-0.5">●</span>
+                            <span><strong class="text-white">grades[5]</strong> — массив из 5 оценок (private)</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="feature-card p-6">
+                    <h3 class="text-lg font-bold text-purple-400 mb-3 flex items-center gap-2">
+                        <span class="bg-purple-500/20 rounded-lg p-2 text-xl">⚙️</span>
+                        Методы
+                    </h3>
+                    <ul class="text-slate-300 text-sm space-y-2">
+                        <li class="flex items-start gap-2">
+                            <span class="text-purple-400 mt-0.5">●</span>
+                            <span><strong class="text-white">getAverage()</strong> — средний балл (double)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-purple-400 mt-0.5">●</span>
+                            <span><strong class="text-white">hasOnlyGoodGrades()</strong> — только 4 и 5?</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-purple-400 mt-0.5">●</span>
+                            <span><strong class="text-white">printInfo()</strong> — полная информация</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="feature-card p-6">
+                    <h3 class="text-lg font-bold text-emerald-400 mb-3 flex items-center gap-2">
+                        <span class="bg-emerald-500/20 rounded-lg p-2 text-xl">🔧</span>
+                        Конструкторы
+                    </h3>
+                    <ul class="text-slate-300 text-sm space-y-2">
+                        <li class="flex items-start gap-2">
+                            <span class="text-emerald-400 mt-0.5">●</span>
+                            <span><strong class="text-white">Student()</strong> — по умолчанию</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-emerald-400 mt-0.5">●</span>
+                            <span><strong class="text-white">Student(name, group, arr)</strong> — с массивом</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-emerald-400 mt-0.5">●</span>
+                            <span><strong class="text-white">Student(name, group, g1..g5)</strong> — 5 оценок</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="feature-card p-6">
+                    <h3 class="text-lg font-bold text-amber-400 mb-3 flex items-center gap-2">
+                        <span class="bg-amber-500/20 rounded-lg p-2 text-xl">🚀</span>
+                        main()
+                    </h3>
+                    <ul class="text-slate-300 text-sm space-y-2">
+                        <li class="flex items-start gap-2">
+                            <span class="text-amber-400 mt-0.5">①</span>
+                            <span>Создание массива из 10 студентов</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-amber-400 mt-0.5">②</span>
+                            <span>Сортировка по среднему баллу (лямбда)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-amber-400 mt-0.5">③</span>
+                            <span>Вывод списка + фильтрация «отличников»</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Compilation Section -->
+    <section class="px-4 pb-16">
+        <div class="max-w-5xl mx-auto">
+            <div class="feature-card p-6 border-indigo-500/30">
+                <h3 class="text-lg font-bold text-white mb-3">💻 Компиляция и запуск</h3>
+                <div class="space-y-3">
+                    <div class="bg-slate-900/50 rounded-lg p-4">
+                        <p class="text-slate-400 text-xs mb-1">Linux / macOS:</p>
+                        <code class="code-font text-green-400 text-sm">g++ -std=c++17 -o student main.cpp && ./student</code>
+                    </div>
+                    <div class="bg-slate-900/50 rounded-lg p-4">
+                        <p class="text-slate-400 text-xs mb-1">Windows (MinGW):</p>
+                        <code class="code-font text-green-400 text-sm">g++ -std=c++17 -o student.exe main.cpp && student.exe</code>
+                    </div>
+                    <div class="bg-slate-900/50 rounded-lg p-4">
+                        <p class="text-slate-400 text-xs mb-1">Visual Studio (Developer Command Prompt):</p>
+                        <code class="code-font text-green-400 text-sm">cl /EHsc /std:c++17 main.cpp && main.exe</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 py-8 text-center">
+        <p class="text-slate-500 text-sm">C++ Student Class — Учебный пример ООП</p>
+    </footer>
+
+    <script>
+        // Подсветка синтаксиса
+        hljs.highlightAll();
+
+        // Копирование кода в буфер обмена
+        function copyCode() {
+            const codeBlock = document.getElementById('codeBlock');
+            const btn = document.getElementById('copyBtn');
+            const btnText = document.getElementById('copyText');
+            const btnIcon = document.getElementById('copyIcon');
+
+            // Получаем текст кода, заменяя HTML-сущности обратно
+            let code = codeBlock.innerText || codeBlock.textContent;
+
+            navigator.clipboard.writeText(code).then(() => {
+                btn.classList.add('copied');
+                btnText.textContent = 'Скопировано!';
+                btnIcon.innerHTML = '<polyline points="20 6 9 17 4 12"></polyline>';
+
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btnText.textContent = 'Копировать';
+                    btnIcon.innerHTML = '<rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>';
+                }, 2000);
+            }).catch(err => {
+                // Fallback для старых браузеров
+                const textarea = document.createElement('textarea');
+                textarea.value = code;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+
+                btn.classList.add('copied');
+                btnText.textContent = 'Скопировано!';
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btnText.textContent = 'Копировать';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
